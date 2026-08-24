@@ -21,7 +21,20 @@ class Point {
 
 class Elipse {
     private:
-        std::array<int, 2> center;
+        Point center;
+        float h_rad;
+        float v_rad;
+    public:
+        //constructors
+        Elipse(Point c, float h, float v) : center(c), h_rad(h), v_rad(v) {}
+        //if given single radius (circle wider than default)
+        Elipse(Point c, float r) : Elipse(c, r, r) {}
+        //if given no radius (default circle)
+        Elipse(Point c) : Elipse(c, 50, 50) {}
+
+        void draw_self() {
+            DrawEllipse((int) center.get_x(), (int) center.get_y(), h_rad, v_rad, RED);
+        }
 };
 
 int main() {
@@ -30,20 +43,17 @@ int main() {
 
     InitWindow(screen_width, screen_height, "basic window");
 
-    int frame = 0;
     Point p = Point(0, 0);
-    std::cout << p.get_x() << "," << p.get_y() << std::endl; 
+    std::cout << p.get_x() << ", " << p.get_y() << std::endl; 
+
+    Elipse e = Elipse(Point(500, 250), 50, 100);
 
     while (!WindowShouldClose()) {
-        frame++;
-
-        std::string frame_string = std::to_string(frame);
-        const char* frame_char = frame_string.c_str();
 
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
-            DrawText(frame_char, 190, 200, 20, LIGHTGRAY);
+            e.draw_self();
 
         EndDrawing();
     }
