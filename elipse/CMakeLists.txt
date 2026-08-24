@@ -1,8 +1,6 @@
-cmake_minimum_required(VERSION 3.28.3)
+add_library(elipse_lib STATIC elipse.cpp elipse.hpp)
 
-project(physics_lib)
-
-add_executable(physics_test main.cpp)
+target_include_directories(elipse_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 include(FetchContent)
 
@@ -17,12 +15,8 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(raylib)
 
-add_subdirectory(point)
-add_subdirectory(elipse)
-
-target_link_libraries(physics_test
-    PRIVATE 
-        raylib
+target_link_libraries(elipse_lib
+    PRIVATE
         point_lib
-        elipse_lib
+        raylib
 )
