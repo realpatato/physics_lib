@@ -4,10 +4,11 @@
 
 #include "point.hpp"
 #include "elipse.hpp"
+#include "constants.hpp"
 
 int main() {
-    const int screen_width = 1000;
-    const int screen_height = 500;
+    const int screen_width = constants::screen_width;
+    const int screen_height = constants::screen_height;
 
     InitWindow(screen_width, screen_height, "basic window");
 
@@ -15,18 +16,20 @@ int main() {
     std::cout << p.get_x() << ", " << p.get_y() << std::endl; 
 
     //non-touching
-    Elipse e1 = Elipse(Point(250, 125), 20, 20);
-    Elipse e2 = Elipse(Point(750, 125), 20, 20);
+    Elipse e1 = Elipse(Point(-250, -125), 20, 20);
+    Elipse e2 = Elipse(Point(250, -125), 20, 20);
 
     //touching
-    Elipse e3 = Elipse(Point(490, 375), 20, 20);
-    Elipse e4 = Elipse(Point(510, 375), 20, 20);
+    Elipse e3 = Elipse(Point(-10, 125), 20, 20);
+    Elipse e4 = Elipse(Point(10, 125), 20, 20);
 
     while (!WindowShouldClose()) {
 
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
+            DrawLine(screen_width/2, 0, screen_width/2, screen_height, BLACK);
+            DrawLine(0, screen_height/2, screen_width, screen_height/2, BLACK);
             e1.draw_self();
             e2.draw_self();
             e3.draw_self();

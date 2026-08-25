@@ -17,6 +17,7 @@ FetchContent_MakeAvailable(raylib)
 
 target_link_libraries(elipse_lib
     PRIVATE
+        constants
         point_lib
         raylib
 )

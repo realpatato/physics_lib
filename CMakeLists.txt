@@ -19,10 +19,12 @@ FetchContent_MakeAvailable(raylib)
 
 add_subdirectory(point)
 add_subdirectory(elipse)
+add_subdirectory(constants)
 
 target_link_libraries(physics_test
     PRIVATE 
         raylib
         point_lib
         elipse_lib
+        constants
 )
