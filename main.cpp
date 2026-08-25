@@ -12,19 +12,25 @@ int main() {
 
     InitWindow(screen_width, screen_height, "basic window");
 
-    Point p = Point(0, 0);
-    Point p2 = Point(10, 10);
-
-    Point p3 = p + p2;
-    Point p4 = p - p2;
-
     //non-touching
     Elipse e1 = Elipse(Point(-250, -125), 20, 20);
     Elipse e2 = Elipse(Point(250, -125), 20, 20);
 
+    Point d1 = e1.get_direction(e2.get_center());
+    Point sp1 = e1.support(d1);
+
+    Point d2 = e2.get_direction(e1.get_center());
+    Point sp2 = e2.support(d2);
+
     //touching
     Elipse e3 = Elipse(Point(-10, 125), 20, 20);
     Elipse e4 = Elipse(Point(10, 125), 20, 20);
+
+    Point d3 = e3.get_direction(e4.get_center());
+    Point sp3 = e3.support(d3);
+
+    Point d4 = e4.get_direction(e3.get_center());
+    Point sp4 = e4.support(d4);
 
     while (!WindowShouldClose()) {
 
@@ -38,8 +44,10 @@ int main() {
             e3.draw_self();
             e4.draw_self();
 
-            p3.draw_self(); 
-            p4.draw_self();
+            sp1.draw_self(); 
+            sp2.draw_self();
+            sp3.draw_self();
+            sp4.draw_self();
 
         EndDrawing();
     }

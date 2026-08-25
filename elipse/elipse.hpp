@@ -10,5 +10,8 @@ class Elipse {
         Elipse(Point c, float h, float v);
         Elipse(Point c, float r);
         Elipse(Point c);
+        Point get_center();
+        Point support(Point d);
+        Point get_direction(Elipse e);
         void draw_self();
 };
