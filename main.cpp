@@ -13,7 +13,10 @@ int main() {
     InitWindow(screen_width, screen_height, "basic window");
 
     Point p = Point(0, 0);
-    std::cout << p.get_x() << ", " << p.get_y() << std::endl; 
+    Point p2 = Point(10, 10);
+
+    Point p3 = p + p2;
+    Point p4 = p - p2;
 
     //non-touching
     Elipse e1 = Elipse(Point(-250, -125), 20, 20);
@@ -34,6 +37,9 @@ int main() {
             e2.draw_self();
             e3.draw_self();
             e4.draw_self();
+
+            p3.draw_self(); 
+            p4.draw_self();
 
         EndDrawing();
     }

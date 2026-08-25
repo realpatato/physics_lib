@@ -9,8 +9,13 @@ class Point {
     public:
         Point(float x, float y);
         Point();
+        Point operator+(const Point& other);
+        Point operator-(const Point& other);
         float get_x();
+        void mod_x(float nx);
         float get_y();
+        void mod_y(float ny);
         float get_draw_x();
         float get_draw_y();
+        void draw_self();
 };
