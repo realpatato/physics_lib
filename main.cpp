@@ -14,14 +14,23 @@ int main() {
     Point p = Point(0, 0);
     std::cout << p.get_x() << ", " << p.get_y() << std::endl; 
 
-    Elipse e = Elipse(Point(500, 250), 100, 100);
+    //non-touching
+    Elipse e1 = Elipse(Point(250, 125), 20, 20);
+    Elipse e2 = Elipse(Point(750, 125), 20, 20);
+
+    //touching
+    Elipse e3 = Elipse(Point(490, 375), 20, 20);
+    Elipse e4 = Elipse(Point(510, 375), 20, 20);
 
     while (!WindowShouldClose()) {
 
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
-            e.draw_self();
+            e1.draw_self();
+            e2.draw_self();
+            e3.draw_self();
+            e4.draw_self();
 
         EndDrawing();
     }
