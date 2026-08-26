@@ -14,7 +14,7 @@ class Elipse {
         Point get_center();
         Point support(Point d);
         Point get_direction(Elipse o);
-        Point get_direction(Point sp1, Point sp2);
+        Point triple_product(Point a, Point b, Point c);
         Point get_first_simplex_point(Elipse o);
         Point get_simplex_point(Point d, Elipse o);
         Simplex get_simplex(Elipse o);

@@ -21,15 +21,8 @@ Point Elipse::get_direction(Elipse o) {
     return (center - o.get_center());
 }
 
-Point Elipse::get_direction(Point sp1, Point sp2) {
-    Point sp2_sp1 = sp1 - sp2; //vector representing line between sp2 and sp1
-    Point sp2_origin = Point(0, 0) - sp2; //vector representing line between sp2 and origin
-    
-    //the scalar of z created by the cross product of sp2_sp1 and sp2_origin --> cross product would create (0, 0, z) 
-    float z = (sp2_sp1.get_x() * sp2_origin.get_y()) - (sp2_sp1.get_y() * sp2_origin.get_x());
-    
-    //getting the cross product of (0, 0, z) and sp2_sp1
-    return Point((-z * sp2_sp1.get_y()), (z * sp2_sp1.get_x()));
+Point Elipse::triple_product(Point a, Point b, Point c) {
+    return b * (a * c) - a * (b * c); //dot products in parenthesis, vector multiplication, then point subtraction
 }
 
 Point Elipse::support(Point d) {
@@ -90,7 +83,9 @@ Simplex Elipse::get_simplex(Elipse o) {
         return Simplex(false);
     }
 
-    Point sp3d = get_direction(sp1, sp2);
+    Point sp2_sp1 = sp1 - sp2;
+    Point sp2_origin = Point(0, 0) - sp2;
+    Point sp3d = triple_product(sp2_sp1, sp2_origin, sp2_sp1);
     Point sp3 = get_simplex_point(sp3d, o);
 
     //sanitity check
