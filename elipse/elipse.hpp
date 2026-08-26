@@ -13,5 +13,6 @@ class Elipse {
         Point get_center();
         Point support(Point d);
         Point get_direction(Elipse e);
+        Point get_simplex_point1(Elipse e);
         void draw_self();
 };

@@ -16,21 +16,16 @@ int main() {
     Elipse e1 = Elipse(Point(-250, -125), 20, 20);
     Elipse e2 = Elipse(Point(250, -125), 20, 20);
 
-    Point d1 = e1.get_direction(e2.get_center());
-    Point sp1 = e1.support(d1);
-
-    Point d2 = e2.get_direction(e1.get_center());
-    Point sp2 = e2.support(d2);
+    Point sp1 = e1.get_simplex_point1(e2);
 
     //touching
     Elipse e3 = Elipse(Point(-10, 125), 20, 20);
     Elipse e4 = Elipse(Point(10, 125), 20, 20);
 
-    Point d3 = e3.get_direction(e4.get_center());
-    Point sp3 = e3.support(d3);
+    Point sp2 = e3.get_simplex_point1(e4);
 
-    Point d4 = e4.get_direction(e3.get_center());
-    Point sp4 = e4.support(d4);
+    std::cout << sp1.get_x() << ", " << sp1.get_y() << std::endl;
+    std::cout << sp2.get_x() << ", " << sp2.get_y() << std::endl;
 
     while (!WindowShouldClose()) {
 
@@ -46,8 +41,6 @@ int main() {
 
             sp1.draw_self(); 
             sp2.draw_self();
-            sp3.draw_self();
-            sp4.draw_self();
 
         EndDrawing();
     }

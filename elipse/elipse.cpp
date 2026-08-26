@@ -17,7 +17,7 @@ void Elipse::draw_self() {
 }
 
 Point Elipse::get_direction(Elipse e) {
-    return (e.get_center() - center);
+    return (center - e.get_center());
 }
 
 Point Elipse::support(Point d) {
@@ -39,4 +39,18 @@ Point Elipse::support(Point d) {
     p.mod_x(h_sqd * d_x / denom);
     p.mod_y(v_sqd * d_y / denom);
     return p + center;
+}
+
+Point Elipse::get_simplex_point1(Elipse o) {
+    //support point towards other shape
+    Point other_direction = this-> get_direction(o);
+    Point self_support = this-> support(other_direction);
+
+    //support point of other shape
+    Point self_direction = o.get_direction(*this);
+    Point other_support = o.support(self_direction);
+
+    //get the support point made by the difference
+    Point simplex_support = self_support - other_support;
+    return simplex_support;
 }
