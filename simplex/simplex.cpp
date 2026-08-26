@@ -8,3 +8,7 @@ Simplex::Simplex(Point (&ps)[3]) {
     }
     exists = true;
 };
+
+bool Simplex::get_exists() {
+    return exists;
+}

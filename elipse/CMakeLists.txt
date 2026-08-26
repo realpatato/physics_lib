@@ -19,5 +19,6 @@ target_link_libraries(elipse_lib
     PRIVATE
         constants
         point_lib
+        simplex_lib
         raylib
 )

@@ -1,5 +1,6 @@
 #pragma once
 #include "point.hpp"
+#include "simplex.hpp"
 
 class Elipse {
     private:
@@ -12,7 +13,9 @@ class Elipse {
         Elipse(Point c);
         Point get_center();
         Point support(Point d);
-        Point get_direction(Elipse e);
-        Point get_simplex_point1(Elipse e);
+        Point get_direction(Elipse o);
+        Point get_simplex_point1(Elipse o);
+        Point get_simplex_point2(Point sp1, Elipse o);
+        Simplex get_simplex(Elipse o);
         void draw_self();
 };

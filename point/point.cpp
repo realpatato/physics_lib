@@ -20,6 +20,14 @@ Point Point::operator-(const Point& other) {
     return Point(this-> x - other.x, this-> y - other.y);
 }
 
+Point Point::operator*(const float& other) {
+    return Point(this-> x * other, this-> y * other);
+}
+
+float Point::operator*(const Point& other) {
+    return (this-> x * other.x) + (this-> y * other.y);
+}
+
 float Point::get_x() {
     return x;
 }

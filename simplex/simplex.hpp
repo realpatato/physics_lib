@@ -8,4 +8,5 @@ class Simplex {
     public:
         Simplex(bool e);
         Simplex(Point (&ps)[3]);
+        bool get_exists();
 };

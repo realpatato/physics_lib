@@ -1,5 +1,6 @@
 #include "elipse.hpp"
 #include "point.hpp"
+#include "simplex.hpp"
 
 #include <cmath>
 #include <raylib.h>
@@ -16,8 +17,8 @@ void Elipse::draw_self() {
     DrawEllipse((int) center.get_draw_x(), center.get_draw_y(), h_rad, v_rad, RED);
 }
 
-Point Elipse::get_direction(Elipse e) {
-    return (center - e.get_center());
+Point Elipse::get_direction(Elipse o) {
+    return (center - o.get_center());
 }
 
 Point Elipse::support(Point d) {
@@ -43,14 +44,38 @@ Point Elipse::support(Point d) {
 
 Point Elipse::get_simplex_point1(Elipse o) {
     //support point towards other shape
-    Point other_direction = this-> get_direction(o);
-    Point self_support = this-> support(other_direction);
+    Point self_direction = this-> get_direction(o);
+    Point self_support = this-> support(self_direction);
 
     //support point of other shape
-    Point self_direction = o.get_direction(*this);
-    Point other_support = o.support(self_direction);
+    Point other_direction = self_direction * -1;
+    Point other_support = o.support(other_direction);
 
     //get the support point made by the difference
     Point simplex_support = self_support - other_support;
     return simplex_support;
+}
+
+Point Elipse::get_simplex_point2(Point d, Elipse o) {
+    Point self_direction = d;
+    Point self_support = this-> support(self_direction);
+    
+    Point other_direction = self_direction * -1;
+    Point other_support = o.support(other_direction);
+
+    Point simplex_support = self_support - other_support;
+
+    return simplex_support;
+}
+
+Simplex Elipse::get_simplex(Elipse o) {
+    Point sp1 = get_simplex_point1(o);
+
+    Point sp2d = Point(0, 0) - sp1;
+    Point sp2 = get_simplex_point2(sp2d, o);
+    
+    //sanitity check
+    if ((sp2d * sp2) < 0) {
+        return Simplex(false);
+    }
 }
