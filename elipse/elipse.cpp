@@ -21,6 +21,17 @@ Point Elipse::get_direction(Elipse o) {
     return (center - o.get_center());
 }
 
+Point Elipse::get_direction(Point sp1, Point sp2) {
+    Point sp2_sp1 = sp1 - sp2; //vector representing line between sp2 and sp1
+    Point sp2_origin = Point(0, 0) - sp2; //vector representing line between sp2 and origin
+    
+    //the scalar of z created by the cross product of sp2_sp1 and sp2_origin --> cross product would create (0, 0, z) 
+    float z = (sp2_sp1.get_x() * sp2_origin.get_y()) - (sp2_sp1.get_y() * sp2_origin.get_x());
+    
+    //getting the cross product of (0, 0, z) and sp2_sp1
+    return Point((-z * sp2_sp1.get_y()), (z * sp2_sp1.get_x()));
+}
+
 Point Elipse::support(Point d) {
     Point p = Point();
 
@@ -42,7 +53,7 @@ Point Elipse::support(Point d) {
     return p + center;
 }
 
-Point Elipse::get_simplex_point1(Elipse o) {
+Point Elipse::get_first_simplex_point(Elipse o) {
     //support point towards other shape
     Point self_direction = this-> get_direction(o);
     Point self_support = this-> support(self_direction);
@@ -56,7 +67,7 @@ Point Elipse::get_simplex_point1(Elipse o) {
     return simplex_support;
 }
 
-Point Elipse::get_simplex_point2(Point d, Elipse o) {
+Point Elipse::get_simplex_point(Point d, Elipse o) {
     Point self_direction = d;
     Point self_support = this-> support(self_direction);
     
@@ -69,13 +80,23 @@ Point Elipse::get_simplex_point2(Point d, Elipse o) {
 }
 
 Simplex Elipse::get_simplex(Elipse o) {
-    Point sp1 = get_simplex_point1(o);
+    Point sp1 = get_first_simplex_point(o);
 
     Point sp2d = Point(0, 0) - sp1;
-    Point sp2 = get_simplex_point2(sp2d, o);
+    Point sp2 = get_simplex_point(sp2d, o);
     
     //sanitity check
     if ((sp2d * sp2) < 0) {
         return Simplex(false);
     }
+
+    Point sp3d = get_direction(sp1, sp2);
+    Point sp3 = get_simplex_point(sp3d, o);
+
+    //sanitity check
+    if ((sp3d * sp3) < 0) {
+        return Simplex(false);
+    }
+
+    return Simplex({sp1, sp2, sp3});
 }

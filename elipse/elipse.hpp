@@ -14,8 +14,9 @@ class Elipse {
         Point get_center();
         Point support(Point d);
         Point get_direction(Elipse o);
-        Point get_simplex_point1(Elipse o);
-        Point get_simplex_point2(Point sp1, Elipse o);
+        Point get_direction(Point sp1, Point sp2);
+        Point get_first_simplex_point(Elipse o);
+        Point get_simplex_point(Point d, Elipse o);
         Simplex get_simplex(Elipse o);
         void draw_self();
 };

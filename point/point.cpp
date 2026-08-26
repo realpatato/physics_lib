@@ -28,6 +28,10 @@ float Point::operator*(const Point& other) {
     return (this-> x * other.x) + (this-> y * other.y);
 }
 
+Point::operator Vector2() const {
+    return Vector2{draw_x, draw_y};
+}
+
 float Point::get_x() {
     return x;
 }

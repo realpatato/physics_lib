@@ -1,4 +1,5 @@
 #pragma once
+#include <raylib.h>
 
 class Point {
     private:
@@ -13,6 +14,7 @@ class Point {
         Point operator-(const Point& other);
         Point operator*(const float& other);
         float operator*(const Point& other); //dot product
+        operator Vector2() const; //raylib conversion
         float get_x();
         void mod_x(float nx);
         float get_y();
