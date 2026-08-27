@@ -17,6 +17,7 @@ class Elipse {
         Point triple_product(Point a, Point b, Point c);
         Point get_first_simplex_point(Elipse o);
         Point get_simplex_point(Point d, Elipse o);
+        bool update_simplex(Point& a, Point& b, Point& c, int& smpx_size, Point& d, Elipse o);
         Simplex get_simplex(Elipse o);
         void draw_self();
 };

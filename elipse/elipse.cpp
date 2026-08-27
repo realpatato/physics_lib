@@ -2,7 +2,10 @@
 #include "point.hpp"
 #include "simplex.hpp"
 
+#include <iostream>
+
 #include <cmath>
+#include <array>
 #include <raylib.h>
 
 Elipse::Elipse(Point c, float h, float v) : center(c), h_rad(h), v_rad(v) {}
@@ -72,26 +75,61 @@ Point Elipse::get_simplex_point(Point d, Elipse o) {
     return simplex_support;
 }
 
+bool Elipse::update_simplex(Point& a, Point& b, Point& c, int& smpx_size, Point& d, Elipse o) {
+    if (smpx_size == 1) {
+        b = a;
+        a = get_simplex_point(d, o);
+        //sanity check
+        if (a * d < 0) {
+            return true;
+        }
+        smpx_size++;
+        d = triple_product(b - a, a * -1, b - a);
+        return false;
+    }
+
+    if (smpx_size == 2) {
+        c = b;
+        b = a;
+        a = get_simplex_point(d, o);
+        //sanity check
+        if (a * d < 0) {
+            return true;
+        }
+        //origin checks
+        //Region AB
+        Point ab_perpendicular = triple_product(c - a, b - a, b - a);
+        if (ab_perpendicular * (a * -1) > 0) {
+            d = ab_perpendicular;
+            return false;
+        }
+        //Region AC
+        Point ac_perpendicular = triple_product(b - a, c - a, c - a);
+        if (ac_perpendicular * (a * -1) > 0) {
+            d = ac_perpendicular;
+            b = c;
+            return false;
+        }
+        smpx_size++;
+        return true;
+    }
+}
+
 Simplex Elipse::get_simplex(Elipse o) {
     Point sp1 = get_first_simplex_point(o);
+    Point sp2 = Point(0, 0);
+    Point sp3 = Point(0, 0);
+    Point direction = Point(-sp1.get_x(), -sp1.get_y());
+    int simplex_size = 1;
 
-    Point sp2d = Point(0, 0) - sp1;
-    Point sp2 = get_simplex_point(sp2d, o);
-    
-    //sanitity check
-    if ((sp2d * sp2) < 0) {
-        return Simplex(false);
+    bool found = update_simplex(sp1, sp2, sp3, simplex_size, direction, o);
+
+    while (!found) {
+        found = update_simplex(sp1, sp2, sp3, simplex_size, direction, o);
     }
 
-    Point sp2_sp1 = sp1 - sp2;
-    Point sp2_origin = Point(0, 0) - sp2;
-    Point sp3d = triple_product(sp2_sp1, sp2_origin, sp2_sp1);
-    Point sp3 = get_simplex_point(sp3d, o);
-
-    //sanitity check
-    if ((sp3d * sp3) < 0) {
+    if (simplex_size < 3) {
         return Simplex(false);
     }
-
     return Simplex({sp1, sp2, sp3});
 }

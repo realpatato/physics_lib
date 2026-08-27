@@ -21,7 +21,11 @@ std::vector<Vector2> Simplex::get_draw_points(std::vector<Point> ps) {
     }
     Point center = Point(x_total / ps.size(), y_total / ps.size());
 
-    std::vector dp = ps;
+    std::vector<Point> dp;
+
+    dp.push_back(ps[2]);
+    dp.push_back(ps[1]);
+    dp.push_back(ps[0]);
     dp.push_back(dp.front());
     dp.insert(dp.begin(), center);
 
