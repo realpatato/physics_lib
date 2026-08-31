@@ -25,7 +25,14 @@ Point Elipse::get_direction(Elipse o) {
 }
 
 Point Elipse::triple_product(Point a, Point b, Point c) {
-    return b * (a * c) - a * (b * c); //dot products in parenthesis, vector multiplication, then point subtraction
+    float ac = a * c;
+    float bc = b * c;
+    Point result = b * (a * c) - a * (b * c); //dot products in parenthesis, vector multiplication, then point subtraction
+    //prevent returns of 0, 0
+    if (std::abs(result.get_x()) < 1e-5f && std::abs(result.get_y()) < 1e-5f) {
+        return Point(a.get_y() * -1, a.get_x());
+    }
+    return result;
 }
 
 Point Elipse::support(Point d) {
@@ -34,15 +41,16 @@ Point Elipse::support(Point d) {
     float h_sqd = h_rad * h_rad;
     float v_sqd = v_rad * v_rad;
 
-    float d_x = d.get_x();
-    float d_y = d.get_y();
+    float d_x = d.get_x() / h_rad;
+    float d_y = d.get_y() / v_rad;
 
     float inside_sqrt = h_sqd * (d_x * d_x) + v_sqd * (d_y * d_y);
     float denom = std::sqrt(inside_sqrt);
 
     if (denom == 0) {
-        return Point();
-    }
+        std::cout << "hello" << std::endl;
+        return Point(h_rad, 0);
+    } 
 
     p.mod_x(h_sqd * d_x / denom);
     p.mod_y(v_sqd * d_y / denom);
@@ -84,6 +92,7 @@ bool Elipse::update_simplex(Point& a, Point& b, Point& c, int& smpx_size, Point&
             return true;
         }
         smpx_size++;
+        Point AB = b - a;
         d = triple_product(b - a, a * -1, b - a);
         return false;
     }
@@ -99,13 +108,13 @@ bool Elipse::update_simplex(Point& a, Point& b, Point& c, int& smpx_size, Point&
         //origin checks
         //Region AB
         Point ab_perpendicular = triple_product(c - a, b - a, b - a);
-        if (ab_perpendicular * (a * -1) > 0) {
+        if (ab_perpendicular * (a * -1) >= 0) {
             d = ab_perpendicular;
             return false;
         }
         //Region AC
         Point ac_perpendicular = triple_product(b - a, c - a, c - a);
-        if (ac_perpendicular * (a * -1) > 0) {
+        if (ac_perpendicular * (a * -1) >= 0) {
             d = ac_perpendicular;
             b = c;
             return false;
@@ -113,13 +122,14 @@ bool Elipse::update_simplex(Point& a, Point& b, Point& c, int& smpx_size, Point&
         smpx_size++;
         return true;
     }
+    return true;
 }
 
 Simplex Elipse::get_simplex(Elipse o) {
     Point sp1 = get_first_simplex_point(o);
     Point sp2 = Point(0, 0);
     Point sp3 = Point(0, 0);
-    Point direction = Point(-sp1.get_x(), -sp1.get_y());
+    Point direction = sp1 * -1;
     int simplex_size = 1;
 
     bool found = update_simplex(sp1, sp2, sp3, simplex_size, direction, o);

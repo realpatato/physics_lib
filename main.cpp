@@ -22,10 +22,12 @@ int main() {
     std::cout << s.get_exists() << std::endl;
 
     //touching
-    Elipse e3 = Elipse(Point(-10, 125), 20, 20);
-    Elipse e4 = Elipse(Point(10, 100), 20, 20);
+    Elipse e3 = Elipse(Point(5, 125), 20, 20);
+    Elipse e4 = Elipse(Point(-30, 110), 20, 20);
 
     Simplex s2 = e3.get_simplex(e4);
+
+    std::cout << s2.get_exists() << std::endl;
 
     while (!WindowShouldClose()) {
 

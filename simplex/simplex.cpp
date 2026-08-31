@@ -2,7 +2,9 @@
 #include "simplex.hpp"
 
 #include <raylib.h>
+#include <iostream>
 #include <vector>
+#include <cmath>
 
 Simplex::Simplex(bool e) : exists(e) {};
 Simplex::Simplex(std::vector<Point> ps) {
@@ -21,11 +23,35 @@ std::vector<Vector2> Simplex::get_draw_points(std::vector<Point> ps) {
     }
     Point center = Point(x_total / ps.size(), y_total / ps.size());
 
-    std::vector<Point> dp;
+    std::vector<float> angles;
+    std::vector<Point> dp = ps;
 
-    dp.push_back(ps[2]);
-    dp.push_back(ps[1]);
-    dp.push_back(ps[0]);
+    //sort the points by draw angle measures, to enforce direction
+    for (Point p : dp) {
+        angles.push_back(std::atan2(p.get_draw_y() - center.get_draw_y(), p.get_draw_x() - center.get_draw_x()));
+    }
+
+    for (int i = 0; i < angles.size(); i++) {
+        bool swapped = false;
+        for (int k = 0; k < angles.size() - i - 1; k++) {
+            if (angles[k] < angles[k + 1]) {
+                float temp_a = angles[k + 1];
+                angles[k + 1] = angles[k];
+                angles[k] = temp_a;
+
+                Point temp_p = dp[k + 1];
+                dp[k + 1] = dp[k];
+                dp[k] = temp_p;
+
+                swapped = true;
+            }
+        }
+        //early end to optimise (only needed for visualising algorithm so not that important)
+        if (!swapped) {
+            break;
+        }
+    }
+
     dp.push_back(dp.front());
     dp.insert(dp.begin(), center);
 
