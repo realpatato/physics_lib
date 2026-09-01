@@ -1,4 +1,5 @@
 #pragma once
+
 #include "point.hpp"
 #include "simplex.hpp"
 #include "shapes.hpp"

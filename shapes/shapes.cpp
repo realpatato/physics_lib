@@ -2,16 +2,13 @@
 #include "shapes.hpp"
 
 #include <cmath>
-#include <iostream>
 #include <raylib.h>
 
 //shape class, kind of a default
 Point Shape::get_center() {
-    std::cout << "shape get_center" << std::endl;
     return Point(0, 0);
 }
 Point Shape::support(Point d) {
-    std::cout << "shape support" << std::endl;
     return Point(0, 0);
 }
 void Shape::draw_self() {
@@ -50,4 +47,16 @@ Point Ellipse::support(Point d) {
 
 void Ellipse::draw_self() {
     DrawEllipse((int) center.get_draw_x(), center.get_draw_y(), h_rad, v_rad, RED);
+}
+
+Polygon::Polygon(std::vector<Point> p) : center(gen_center(p)), points(p) {}
+
+Point Polygon::gen_center(std::vector<Point> ps) {
+    float x_total = 0;
+    float y_total = 0;
+    for (Point p : ps) {
+        x_total += p.get_x();
+        y_total += p.get_y();
+    }
+    return Point(x_total / ps.size(), y_total / ps.size());
 }

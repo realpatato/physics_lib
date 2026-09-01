@@ -1,5 +1,8 @@
 #pragma once
+
 #include "point.hpp"
+
+#include <vector>
 
 class Shape {
     private: 
@@ -25,4 +28,13 @@ class Ellipse : public Shape {
         Point support(Point d) override;
         
         void draw_self() override;
+};
+
+class Polygon : public Shape {
+    private:
+        Point center;
+        std::vector<Point> points;
+    public:
+        Polygon(std::vector<Point> p);
+        Point gen_center(std::vector<Point> p);
 };

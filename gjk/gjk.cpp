@@ -1,8 +1,7 @@
 #include "gjk.hpp"
 
-#include <iostream>
-
 #include <cmath>
+#include <iostream>
 
 Point triple_product(Point a, Point b, Point c) {
     Point result = b * (a * c) - a * (b * c); //dot products in parenthesis, vector multiplication, then point subtraction
@@ -14,15 +13,7 @@ Point triple_product(Point a, Point b, Point c) {
 }
 
 Point get_simplex_point(Shape* A, Shape* B, Point d) {
-    Point a_direction = d;
-    Point a_support = A->support(a_direction);
-    
-    Point b_direction = a_direction * -1;
-    Point b_support = B->support(b_direction);
-
-    Point simplex_support = a_support - b_support;
-
-    return simplex_support;
+    return A->support(d) - B->support(d * -1);
 }
 
 bool update_simplex(Shape* A, Shape* B, Point& a, Point& b, Point& c, int& smpx_size, Point& d) {
@@ -76,13 +67,22 @@ Simplex get_simplex(Shape* A, Shape* B) {
     bool found = update_simplex(A, B, sp1, sp2, sp3, simplex_size, direction);
 
     while (!found) {
-        std::cout << "not found yet!" << std::endl;
-        std::cout << "sp1: ("<< sp1.get_x() << ", " << sp1.get_y() << ")" << std::endl;
         found = update_simplex(A, B, sp1, sp2, sp3, simplex_size, direction);
     }
 
     if (simplex_size < 3) {
         return Simplex(false);
     }
+
+    //sort the direction
+    float cross_product = (sp2.get_x() - sp1.get_x()) * (sp3.get_y() - sp1.get_y()) - ((sp2.get_y() - sp1.get_y()) * (sp3.get_x() - sp1.get_x()));
+    if (cross_product < 0) {
+        Point temp = sp2;
+        sp2 = sp1;
+        sp1 = temp;
+    }
+    std::cout << "sp1: " << sp1.get_x() << ", " << sp1.get_y() << std::endl;
+    std::cout << "sp2: " << sp2.get_x() << ", " << sp2.get_y() << std::endl;
+    std::cout << "sp3: " << sp3.get_x() << ", " << sp3.get_y() << std::endl;
     return Simplex({sp1, sp2, sp3});
 }
