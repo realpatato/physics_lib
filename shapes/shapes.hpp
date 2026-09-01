@@ -34,7 +34,12 @@ class Polygon : public Shape {
     private:
         Point center;
         std::vector<Point> points;
+        std::vector<Vector2> draw_points;
     public:
         Polygon(std::vector<Point> p);
         Point gen_center(std::vector<Point> p);
+        std::vector<Point> gen_sorted_points(std::vector<Point> p, Point c);
+        std::vector<Vector2> gen_draw_points(std::vector<Point> sp, Point c);
+
+        void draw_self() override;
 };

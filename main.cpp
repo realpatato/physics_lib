@@ -14,21 +14,19 @@ int main() {
 
     InitWindow(screen_width, screen_height, "basic window");
 
-    //non-touching
-    Shape* e1 = new Ellipse(Point(-250, -125), 20, 20);
-    Shape* e2 = new Ellipse(Point(250, -125), 20, 20);
+    //touching
+    Shape* e1 = new Ellipse(Point(-10, 125), 20, 20);
+    Shape* e2 = new Ellipse(Point(10, 100), 20, 20);
 
     Simplex s = get_simplex(e1, e2);
 
     std::cout << s.get_exists() << std::endl;
 
-    //touching
-    Shape* e3 = new Ellipse(Point(-10, 125), 20, 20);
-    Shape* e4 = new Ellipse(Point(10, 100), 20, 20);
-
-    Simplex s2 = get_simplex(e3, e4);
-
-    std::cout << s2.get_exists() << std::endl;
+    std::vector<Point> ps1 = {Point(-30, -145), Point(10, -145), Point(10, -105), Point(-30, -105)};
+    std::vector<Point> ps2 = {Point(-10, -170), Point(30, -170), Point(30, -130), Point(-10, -130)};
+    
+    Shape* p1 = new Polygon(ps1);
+    Shape* p2 = new Polygon(ps2);
 
     while (!WindowShouldClose()) {
 
@@ -39,10 +37,11 @@ int main() {
             DrawLine(0, screen_height/2, screen_width, screen_height/2, BLACK);
             e1->draw_self();
             e2->draw_self();
-            e3->draw_self();
-            e4->draw_self();
 
-            s2.draw_self();
+            p1->draw_self();
+            p2->draw_self();
+
+            s.draw_self();
 
         EndDrawing();
     }
