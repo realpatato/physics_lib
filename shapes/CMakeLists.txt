@@ -1,6 +1,6 @@
-add_library(elipse_lib STATIC elipse.cpp elipse.hpp)
+add_library(shapes_lib STATIC shapes.cpp shapes.hpp)
 
-target_include_directories(elipse_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(shapes_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 include(FetchContent)
 
@@ -15,10 +15,8 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(raylib)
 
-target_link_libraries(elipse_lib
+target_link_libraries(shapes_lib
     PRIVATE
-        constants
         point_lib
-        simplex_lib
         raylib
 )

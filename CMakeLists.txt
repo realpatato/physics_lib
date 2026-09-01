@@ -18,15 +18,17 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(raylib)
 
 add_subdirectory(point)
-add_subdirectory(elipse)
 add_subdirectory(constants)
 add_subdirectory(simplex)
+add_subdirectory(shapes)
+add_subdirectory(gjk)
 
 target_link_libraries(physics_test
     PRIVATE 
         raylib
         point_lib
-        elipse_lib
         simplex_lib
+        shapes_lib
+        gjk_lib
         constants
 )
