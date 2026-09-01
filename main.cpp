@@ -28,6 +28,8 @@ int main() {
     Shape* p1 = new Polygon(ps1);
     Shape* p2 = new Polygon(ps2);
 
+    Simplex s2 = get_simplex(p1, p2);
+
     while (!WindowShouldClose()) {
 
         BeginDrawing();
@@ -41,7 +43,7 @@ int main() {
             p1->draw_self();
             p2->draw_self();
 
-            s.draw_self();
+            s2.draw_self();
 
         EndDrawing();
     }

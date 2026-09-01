@@ -26,8 +26,6 @@ Point Ellipse::get_center() {
 }
 
 Point Ellipse::support(Point d) {
-    Point p = Point();
-
     float h_sqd = h_rad * h_rad;
     float v_sqd = v_rad * v_rad;
 
@@ -41,9 +39,7 @@ Point Ellipse::support(Point d) {
         return Point(h_rad, 0);
     } 
 
-    p.mod_x(h_sqd * d_x / denom);
-    p.mod_y(v_sqd * d_y / denom);
-    return p + center;
+    return Point(h_sqd * d_x / denom, v_sqd * d_y / denom) + center;
 }
 
 void Ellipse::draw_self() {
@@ -64,6 +60,20 @@ Point Polygon::gen_center(std::vector<Point> ps) {
         y_total += p.get_y();
     }
     return Point(x_total / ps.size(), y_total / ps.size());
+}
+
+Point Polygon::get_center() {
+    return center;
+}
+
+Point Polygon::support(Point d) {
+    int max = 0;
+    for (int i = 1; i < points.size(); i++) {
+        if (points[i] * d > points[max] * d) {
+            max = i;
+        }
+    }
+    return points[max];
 }
 
 std::vector<Point> Polygon::gen_sorted_points(std::vector<Point> ps, Point c) {
