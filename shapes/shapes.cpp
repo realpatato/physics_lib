@@ -54,6 +54,10 @@ Polygon::Polygon(std::vector<Point> p) :
     points(gen_sorted_points(p, center)), 
     draw_points(gen_draw_points(points, center)) 
 {}
+Polygon::Polygon(Point c, float r, float p) : Shape(c) {
+    points = gen_sorted_points(c, r, p);
+    draw_points = gen_draw_points(points, center);
+}
 
 Point Polygon::gen_center(std::vector<Point> ps) {
     float x_total = 0;
@@ -109,6 +113,17 @@ std::vector<Point> Polygon::gen_sorted_points(std::vector<Point> ps, Point c) {
         }
     }
     return rps;
+}
+
+std::vector<Point> Polygon::gen_sorted_points(Point c, float r, float p) {
+    float angle = (2 * M_PI) / p; //distance between each point in angles
+    std::vector<Point> ps;
+    for (int i = 0; i < p; i++) {
+        float x_offset = r * std::cos(angle * i);
+        float y_offset = r * std::sin(angle * i);
+        ps.push_back(Point(c.get_x() + x_offset, c.get_y() + y_offset));
+    }
+    return ps;
 }
 
 std::vector<Vector2> Polygon::gen_draw_points(std::vector<Point> sp, Point c) {

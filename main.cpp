@@ -29,6 +29,11 @@ int main() {
 
     Simplex s2 = get_simplex(p1, p2);
 
+    Shape* p3 = new Polygon(Point(100, 100), 30, 5);
+    Shape* p4 = new Polygon(Point(120, 75), 30, 8);
+
+    Simplex s3 = get_simplex(p3, p4);
+
     while (!WindowShouldClose()) {
 
         BeginDrawing();
@@ -42,7 +47,10 @@ int main() {
             p1->draw_self();
             p2->draw_self();
 
-            s2.draw_self();
+            p3->draw_self();
+            p4->draw_self();
+
+            s3.draw_self();
 
         EndDrawing();
     }
