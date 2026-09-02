@@ -6,6 +6,8 @@
 #include <raylib.h>
 
 //shape class, kind of a default
+Shape::Shape(Point c) : center(c) {}
+
 Point Shape::get_center() {
     return Point(0, 0);
 }
@@ -17,7 +19,7 @@ void Shape::draw_self() {
 }
 
 //ellipse class
-Ellipse::Ellipse(Point c, float h, float v) : center(c), h_rad(h), v_rad(v) {}
+Ellipse::Ellipse(Point c, float h, float v) : Shape(c), h_rad(h), v_rad(v) {}
 Ellipse::Ellipse(Point c, float r) : Ellipse(c, r, r) {}
 Ellipse::Ellipse(Point c) : Ellipse(c, 50, 50) {}
 
@@ -46,8 +48,9 @@ void Ellipse::draw_self() {
     DrawEllipse((int) center.get_draw_x(), center.get_draw_y(), h_rad, v_rad, RED);
 }
 
+Polygon::Polygon() : Shape(Point(0, 0)) {}
 Polygon::Polygon(std::vector<Point> p) : 
-    center(gen_center(p)), 
+    Shape(gen_center(p)), 
     points(gen_sorted_points(p, center)), 
     draw_points(gen_draw_points(points, center)) 
 {}
@@ -124,4 +127,21 @@ std::vector<Vector2> Polygon::gen_draw_points(std::vector<Point> sp, Point c) {
 
 void Polygon::draw_self() {
     DrawTriangleFan(draw_points.data(), draw_points.size(), RED);
+}
+
+Simplex::Simplex(bool e) : exists(e) {}
+Simplex::Simplex(std::vector<Point> p) {
+    center = gen_center(p);
+    points = p;
+    draw_points = gen_draw_points(p, center);
+    exists = true;
+}
+
+bool Simplex::get_exists() {
+    return exists;
+}
+
+void Simplex::draw_self() {
+    if (!exists) return;
+    DrawTriangleFan(draw_points.data(), draw_points.size(), PURPLE);
 }

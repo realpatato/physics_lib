@@ -5,7 +5,6 @@
 #include "point.hpp"
 #include "shapes.hpp"
 #include "constants.hpp"
-#include "simplex.hpp"
 #include "gjk.hpp"
 
 int main() {

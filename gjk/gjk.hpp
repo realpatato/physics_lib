@@ -1,7 +1,6 @@
 #pragma once
 
 #include "point.hpp"
-#include "simplex.hpp"
 #include "shapes.hpp"
 
 Point triple_product(Point a, Point b, Point c);

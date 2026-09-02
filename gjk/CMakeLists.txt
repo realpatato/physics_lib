@@ -18,7 +18,6 @@ FetchContent_MakeAvailable(raylib)
 target_link_libraries(gjk_lib
     PRIVATE
         point_lib
-        simplex_lib
         shapes_lib
         raylib
 )

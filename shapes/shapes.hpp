@@ -5,9 +5,10 @@
 #include <vector>
 
 class Shape {
-    private: 
+    protected: 
         Point center;
     public:
+        Shape(Point c);
         virtual ~Shape() = default;
         virtual Point get_center();
         virtual Point support(Point d);
@@ -17,7 +18,6 @@ class Shape {
 
 class Ellipse : public Shape {
     private:
-        Point center;
         float h_rad;
         float v_rad;
     public:
@@ -31,11 +31,11 @@ class Ellipse : public Shape {
 };
 
 class Polygon : public Shape {
-    private:
-        Point center;
+    protected:
         std::vector<Point> points;
         std::vector<Vector2> draw_points;
     public:
+        Polygon(); //default constructor, so simplex can work
         Polygon(std::vector<Point> p);
         Point gen_center(std::vector<Point> p);
         Point get_center() override;
@@ -43,5 +43,16 @@ class Polygon : public Shape {
         std::vector<Point> gen_sorted_points(std::vector<Point> p, Point c);
 
         std::vector<Vector2> gen_draw_points(std::vector<Point> sp, Point c);
+        virtual void draw_self() override;
+};
+
+class Simplex : public Polygon {
+    private:
+        bool exists;
+    public:
+        Simplex(bool e);
+        Simplex(std::vector<Point> p);
+        bool get_exists();
+
         void draw_self() override;
 };
