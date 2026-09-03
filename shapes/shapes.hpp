@@ -38,11 +38,12 @@ class Polygon : public Shape {
         Polygon(); //default constructor, so simplex can work
         Polygon(std::vector<Point> p);
         Polygon(Point c, float r, float p);
+        Polygon(Point c, float r, float p, float ir);
         Point gen_center(std::vector<Point> p);
         Point get_center() override;
         Point support(Point d) override;
         std::vector<Point> gen_sorted_points(std::vector<Point> p, Point c); //sorts user list of points
-        std::vector<Point> gen_sorted_points(Point c, float r, float p); //used for default polygons
+        std::vector<Point> gen_sorted_points(Point c, float r, float p, float ir); //used for default polygons
 
         std::vector<Vector2> gen_draw_points(std::vector<Point> sp, Point c);
         virtual void draw_self() override;

@@ -55,7 +55,11 @@ Polygon::Polygon(std::vector<Point> p) :
     draw_points(gen_draw_points(points, center)) 
 {}
 Polygon::Polygon(Point c, float r, float p) : Shape(c) {
-    points = gen_sorted_points(c, r, p);
+    points = gen_sorted_points(c, r, p, 0);
+    draw_points = gen_draw_points(points, center);
+}
+Polygon::Polygon(Point c, float r, float p, float ir) : Shape(c) {
+    points = gen_sorted_points(c, r, p, ir);
     draw_points = gen_draw_points(points, center);
 }
 
@@ -115,13 +119,20 @@ std::vector<Point> Polygon::gen_sorted_points(std::vector<Point> ps, Point c) {
     return rps;
 }
 
-std::vector<Point> Polygon::gen_sorted_points(Point c, float r, float p) {
+std::vector<Point> Polygon::gen_sorted_points(Point c, float r, float p, float ir) {
     float angle = (2 * M_PI) / p; //distance between each point in angles
     std::vector<Point> ps;
+    float star_angle = (ir) ? angle / 2 : 0;
     for (int i = 0; i < p; i++) {
         float x_offset = r * std::cos(angle * i);
         float y_offset = r * std::sin(angle * i);
         ps.push_back(Point(c.get_x() + x_offset, c.get_y() + y_offset));
+        std::cout << star_angle << std::endl;
+        if (star_angle) {
+            x_offset = ir * std::cos(angle * i + star_angle);
+            y_offset = ir * std::sin(angle * i + star_angle);
+            ps.push_back(Point(c.get_x() + x_offset, c.get_y() + y_offset));
+        }
     }
     return ps;
 }

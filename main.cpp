@@ -34,6 +34,8 @@ int main() {
 
     Simplex s3 = get_simplex(p3, p4);
 
+    Shape* star = new Polygon(Point(-250, -125), 30, 5, 10);
+
     while (!WindowShouldClose()) {
 
         BeginDrawing();
@@ -49,6 +51,8 @@ int main() {
 
             p3->draw_self();
             p4->draw_self();
+
+            star->draw_self();
 
             s3.draw_self();
 
