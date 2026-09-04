@@ -12,6 +12,7 @@ class Shape {
         virtual ~Shape() = default;
         virtual Point get_center();
         virtual Point support(Point d);
+        virtual std::vector<Shape*> get_pieces() {return {};};
 
         virtual void draw_self();
 };
@@ -34,9 +35,11 @@ class Polygon : public Shape {
     protected:
         std::vector<Point> points;
         std::vector<Vector2> draw_points;
+        std::vector<Polygon*> pieces;
     public:
         Polygon(); //default constructor, so simplex can work
         Polygon(std::vector<Point> p);
+        Polygon(std::vector<Point> p, bool is_pieces);
         Polygon(Point c, float r, float p);
         Polygon(Point c, float r, float p, float ir);
         Point gen_center(std::vector<Point> p);
@@ -44,6 +47,7 @@ class Polygon : public Shape {
         Point support(Point d) override;
         std::vector<Point> gen_sorted_points(std::vector<Point> p, Point c); //sorts user list of points
         std::vector<Point> gen_sorted_points(Point c, float r, float p, float ir); //used for default polygons
+        std::vector<Shape*> get_pieces() override;
 
         std::vector<Vector2> gen_draw_points(std::vector<Point> sp, Point c);
         virtual void draw_self() override;

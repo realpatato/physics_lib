@@ -58,7 +58,43 @@ bool update_simplex(Shape* A, Shape* B, Point& a, Point& b, Point& c, int& smpx_
     return true;
 }
 
-Simplex get_simplex(Shape* A, Shape* B) {
+std::vector<Simplex> get_simplexes(Shape* A, Shape* B) {
+    std::vector<Simplex> simplexes = {};
+
+    std::cout << A->get_pieces().size() << std::endl; 
+
+    std::vector<Shape*> A_pieces = A->get_pieces();
+    std::vector<Shape*> B_pieces = B->get_pieces();
+
+    for (Shape* a_p : A_pieces) {
+        for (Shape* b_p : B_pieces) {
+            Point sp1 = get_simplex_point(a_p, b_p, (b_p->get_center() - a_p->get_center()));
+            Point sp2, sp3;
+            Point direction = sp1 * -1;
+            int simplex_size = 1;
+
+            bool found = update_simplex(a_p, b_p, sp1, sp2, sp3, simplex_size, direction);
+
+            while (!found) {
+                found = update_simplex(a_p, b_p, sp1, sp2, sp3, simplex_size, direction);
+            }
+
+            if (simplex_size < 3) {
+                simplexes.push_back(Simplex(false));
+            }
+
+            //sort the direction
+            float cross_product = (sp2.get_x() - sp1.get_x()) * (sp3.get_y() - sp1.get_y()) - ((sp2.get_y() - sp1.get_y()) * (sp3.get_x() - sp1.get_x()));
+            if (cross_product < 0) {
+                Point temp = sp2;
+                sp2 = sp1;
+                sp1 = temp;
+            }
+
+            simplexes.push_back(Simplex({sp1, sp2, sp3}));
+        }
+    }
+
     Point sp1 = get_simplex_point(A, B, (B->get_center() - A->get_center()));
     Point sp2, sp3;
     Point direction = sp1 * -1;
@@ -71,7 +107,7 @@ Simplex get_simplex(Shape* A, Shape* B) {
     }
 
     if (simplex_size < 3) {
-        return Simplex(false);
+        simplexes.push_back(Simplex(false));
     }
 
     //sort the direction
@@ -81,8 +117,7 @@ Simplex get_simplex(Shape* A, Shape* B) {
         sp2 = sp1;
         sp1 = temp;
     }
-    std::cout << "sp1: " << sp1.get_x() << ", " << sp1.get_y() << std::endl;
-    std::cout << "sp2: " << sp2.get_x() << ", " << sp2.get_y() << std::endl;
-    std::cout << "sp3: " << sp3.get_x() << ", " << sp3.get_y() << std::endl;
-    return Simplex({sp1, sp2, sp3});
+
+    simplexes.push_back(Simplex({sp1, sp2, sp3}));
+    return simplexes;
 }

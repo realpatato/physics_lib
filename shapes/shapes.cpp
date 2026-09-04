@@ -52,15 +52,31 @@ Polygon::Polygon() : Shape(Point(0, 0)) {}
 Polygon::Polygon(std::vector<Point> p) : 
     Shape(gen_center(p)), 
     points(gen_sorted_points(p, center)), 
-    draw_points(gen_draw_points(points, center)) 
+    draw_points(gen_draw_points(points, center)),
+    pieces({ this })
+{}
+Polygon::Polygon(std::vector<Point> p, bool is_pieces) :
+    Shape(gen_center(p)),
+    points(gen_sorted_points(p, center)), 
+    draw_points(gen_draw_points(points, center))
 {}
 Polygon::Polygon(Point c, float r, float p) : Shape(c) {
     points = gen_sorted_points(c, r, p, 0);
     draw_points = gen_draw_points(points, center);
+    pieces = { this };
 }
 Polygon::Polygon(Point c, float r, float p, float ir) : Shape(c) {
     points = gen_sorted_points(c, r, p, ir);
     draw_points = gen_draw_points(points, center);
+    pieces = { this };
+}
+
+std::vector<Shape*> Polygon::get_pieces() {
+    std::vector<Shape*> p = {};
+    for (const auto& pg : pieces) {
+        p.push_back(pg);
+    }
+    return p;
 }
 
 Point Polygon::gen_center(std::vector<Point> ps) {
@@ -127,7 +143,6 @@ std::vector<Point> Polygon::gen_sorted_points(Point c, float r, float p, float i
         float x_offset = r * std::cos(angle * i);
         float y_offset = r * std::sin(angle * i);
         ps.push_back(Point(c.get_x() + x_offset, c.get_y() + y_offset));
-        std::cout << star_angle << std::endl;
         if (star_angle) {
             x_offset = ir * std::cos(angle * i + star_angle);
             y_offset = ir * std::sin(angle * i + star_angle);
